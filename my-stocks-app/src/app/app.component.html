@@ -1,0 +1,14 @@
+<div class = "home">
+
+  <app-nova-consulta (aoTransferir)="transferir2($event)"></app-nova-consulta>
+
+<p class = "titulo">Histórico</p>
+
+<div class = "cvs" *ngIf="chart">
+  <canvas id="canvas">{{chart}}</canvas>
+</div>
+
+<p class = "titulo">Histórico de consultas</p>
+
+<app-extrato></app-extrato>
+</div>

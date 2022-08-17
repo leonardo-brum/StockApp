@@ -1,0 +1,9 @@
+<div class = "container">
+  <div class = "extrato" *ngFor="let item of transferencias.reverse()">
+    <p class = "extrato__fonte">Ativo: {{item.stock}}</p>
+    <p class = "extrato__fonte">Preço do Ativo: {{item.currentStockPrice | currency}}</p>
+    <p class = "extrato__fonte">Último rendimento: {{item.dividendos.amount | currency}} em {{item.dividendos.date | date: "MMMM/yyyy"}}</p>
+    <p class = "extrato__fonte">Dividend Yield: {{item.dividendYield | percent:'1.2'}}</p>
+    <p class = "extrato__fonte">Data da Consulta: {{item.data | date: "short"}} </p>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+.extrato {
+  background-color: white;
+  padding: 16px;
+  border-style: dashed;
+  border: 10px;
+  border-radius: 35px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+  &__fonte{
+    font-size: 15px;
+  }
+}
