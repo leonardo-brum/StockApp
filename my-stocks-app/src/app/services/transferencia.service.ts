@@ -60,7 +60,7 @@ export class TransferenciaService {
 
   }
 
-  yahooFinance_dividend(stock: any) {
+  yahooFinance_dividend() {
     this.res_dividend = {
       total: 6,
       offset: 0,

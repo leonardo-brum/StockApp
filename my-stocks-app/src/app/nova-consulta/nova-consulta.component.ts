@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter, OnInit} from '@angular/core';
 import { TransferenciaService } from '../services/transferencia.service';
+import { DatePipe } from '@angular/common'
 
 @Component({
   selector: 'app-nova-consulta',
@@ -11,7 +12,7 @@ export class NovaConsultaComponent {
   @Output() aoTransferir = new EventEmitter<any>();
 
   dividendoTotal: number = 0;
-  stock: String = undefined;
+  stock: String = "";
   allStocks: any [];
 
   dataInicio: any;
@@ -23,25 +24,26 @@ export class NovaConsultaComponent {
   }
 
   ngOnInit(){
+
+    const dataAtual = new Date();
+
     this.allStocks = this.service1.yahooFinance_exchanges;
-    this.dataInicio = "2021-08-10";
-    this.dataFim = "2022-08-10";
+
+    const datepipe: DatePipe = new  DatePipe('pt-br')
+    this.dataFim = datepipe.transform(dataAtual, 'yyyy-MM-dd');
+    this.dataInicio = datepipe.transform(new Date().setFullYear(dataAtual.getFullYear() - 1), 'yyyy-MM-dd');
 
   }
 
-  transferir() { // quando o botão search é pressionado
+  consultarAcao() { // quando o botão search é pressionado
 
-    console.log('Buscar Ação desejada: '+this.stock);
 
-    if(this.stock == ""){
-      this.stock = undefined;
-    }
+    if(this.stock != ""){
+      console.log('Buscar Ação desejada: '+this.stock);
 
-    if(this.stock != undefined){
+    this.stock = this.stock.split(" ")[0] // capturando código da ação
 
-    this.stock = this.stock.split(" ")[0]
-
-    this.service1.setStock(this.stock);
+    this.service1.setStock(this.stock); // setando a ação em questão no service1
 
     let stockPrices, histDividendo, resultsDividendos, dividendYield, stockSubscribe = this.stock;
 
@@ -50,10 +52,10 @@ export class NovaConsultaComponent {
       console.log(historico);
 
 
-      stockPrices = historico['results'].map((res) => res.close);
+      stockPrices = historico['results'].map((res) => res.close); // stockPrices é um array com todos os preços da ação
 
 
-      histDividendo = this.service1.yahooFinance_dividend(this.stock);
+      histDividendo = this.service1.yahooFinance_dividend(); // histórico de dividendos
 
       resultsDividendos = histDividendo['results'];
 
@@ -63,21 +65,14 @@ export class NovaConsultaComponent {
       const valorEmitir = {stock: stockSubscribe, currentStockPrice: stockPrices[stockPrices.length-1], dividendos: resultsDividendos[resultsDividendos.length -1], dividendYield: dividendYield,res: historico};
       this.aoTransferir.emit(valorEmitir);
     // });
-
-
-
     } else{
-
       console.log("Nada capturado no input");
     }
 
     this.limparCampos();
-
-
   }
 
   limparCampos(){
-    console.log("limpar input");
     this.stock = "";
   }
 }
