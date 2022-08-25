@@ -21,8 +21,9 @@ export class AppComponent {
 
     let stockPrices = $event.res['results'].map((res) => res.close);
 
+    console.log(stockPrices);
     let stockDates = $event.res['results'].map((res) => res.date);
-
+    console.log(stockDates);
 
     console.log("construindo o chart");
     this.chart = new Chart('canvas', {
