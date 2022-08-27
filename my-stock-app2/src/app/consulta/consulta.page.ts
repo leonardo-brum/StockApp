@@ -45,6 +45,7 @@ export class ConsultaPage implements OnInit {
       this.mensagemConsulta = 'Digite um ativo!';
     }
     if (!(this.stock === '')) {
+
       this.mensagemConsulta = '';
       console.log('Buscar Ação desejada: ' + this.stock);
 
@@ -53,62 +54,85 @@ export class ConsultaPage implements OnInit {
       this.service.setStock(this.stock); // setando a ação em questão no service1
 
       const stockSubscribe = this.stock;
+      let dividendYield = 0.0; // dividendYield começa zerado
+      let dividendo = 0;
 
-      const historico = this.service.yahooFinanceHistorical(this.dataInicio, this.dataFim);
-      // .subscribe(historico => {
+      // const historico
+      this.service.yahooFinanceHistorical(this.dataInicio, this.dataFim)
+      .subscribe(historico => {
       console.log(historico);
 
       const stockPricesCloses = historico.results.map((res) => res.close); // stockPrices é um array com todos os preços da ação
-      const resultsDividendos =  this.service.yahooFinanceDividend();
-      // .subscribe(resultsDividendos => {
-        // histórico de dividendos
 
-        // resultsDividendos = resultsDividendos.results; // just for subscribe
-        console.log(resultsDividendos);
+      setTimeout(() => { // delay para iniciar a segunda chamada -> é necessário ter 1s entre requisições para o endpoint
+        console.log('Iniciando parte 2');
 
-        //dividendYield = valor do ultimo dividendo distribuido / preço da ação no dia que o dividendo foi distribuido
-        //eslint-disable-next-line max-len
-        const dividendYield = resultsDividendos[resultsDividendos.length - 1].amount / historico.results.find((e) => e.date === resultsDividendos[resultsDividendos.length - 1].date).close;
+        // const resultsDividendos
+        this.service.yahooFinanceDividend()
+        .subscribe(resultsDividendos => {
+          // histórico de dividendos
 
-        //eslint-disable-next-line max-len
-        const valorEmitir = {
-          stock: stockSubscribe,
-          currentStockPrice: stockPricesCloses[stockPricesCloses.length - 1],
-          dividendos: resultsDividendos[resultsDividendos.length - 1],
-          yield: dividendYield,
-          res: historico,
-        };
-        console.log(valorEmitir);
-        const stockPrices = valorEmitir.res.results.map((res) => res.close);
-        const stockDates = valorEmitir.res.results.map((res) => res.date);
+          if(resultsDividendos.total !== 0){
+          resultsDividendos = resultsDividendos.results; // just for subscribe
+          console.log(resultsDividendos);
 
-        console.log('construindo o chart: '+this.stock);
+          //dividendYield = valor do ultimo dividendo distribuido / preço da ação no dia que o dividendo foi distribuido
+          try {
+            //eslint-disable-next-line max-len
+            dividendYield = resultsDividendos[resultsDividendos.length - 1].amount / historico.results.find((e) => e.date === resultsDividendos[resultsDividendos.length - 1].date).close;
 
-        const chartStatus = Chart.getChart('canvas'); // <canvas> id
-        if (chartStatus !== undefined) {
-          chartStatus.destroy();
-        }
+          } catch (error) {
+            dividendYield = 0.0;
+            console.log('Nenhum dividendo no tempo selecionado');
+            this.mensagemConsulta = 'Nenhum dividendo no tempo selecionado';
+          }
+          dividendo = resultsDividendos[resultsDividendos.length - 1];
+        } else {
+            console.log('Nenhum dividendo para ação escolhida');
+            this.mensagemConsulta = 'Nenhum dividendo para ação escolhida';
+          }
 
-        this.chart = new Chart('canvas', {
-          type: 'line',
-          data: {
-            labels: stockDates,
-            datasets: [
-              {
-                label: this.stock,
-                data: stockPrices,
-                borderColor: '#81c995',
-                fill: false,
-              },
-            ],
-          },
-        });
+          //eslint-disable-next-line max-len
+          const valorEmitir = {
+            stock: stockSubscribe,
+            currentStockPrice: stockPricesCloses[stockPricesCloses.length - 1],
+            dividendos: dividendo,
+            yield: dividendYield,
+            res: historico,
+          };
+          console.log(valorEmitir);
+          const stockPrices = valorEmitir.res.results.map((res) => res.close);
+          const stockDates = valorEmitir.res.results.map((res) => res.date);
 
-        console.log('adicionando input extrato: ');
+          console.log('construindo o chart: '+stockSubscribe);
 
-        this.service.adicionar(valorEmitir);
-      // });
-      // }); // fim do subscribe
+          const chartStatus = Chart.getChart('canvas'); // <canvas> id
+          if (chartStatus !== undefined) {
+            chartStatus.destroy();
+          }
+
+          this.chart = new Chart('canvas', {
+            type: 'line',
+            data: {
+              labels: stockDates,
+              datasets: [
+                {
+                  label: stockSubscribe,
+                  data: stockPrices,
+                  borderColor: '#81c995',
+                  fill: false,
+                },
+              ],
+            },
+          });
+
+          console.log('adicionando input extrato: ');
+
+          this.service.adicionar(valorEmitir);
+        }); // fim do subscribe 2° chamada
+       }, 1000);
+      }); // fim do subscribe
+
     } else {
       console.log('Nada capturado no input');
     }

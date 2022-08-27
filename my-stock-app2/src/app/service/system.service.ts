@@ -1,42 +1,35 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { delay } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SystemService {
-
   usuarios: any[];
   stock: string;
 
   private listaTransferencia: any[];
 
   constructor(private http: HttpClient) {
-    this.usuarios = [
-      {id: 1, usuario:'leo', senha:'123'},
-    ];
+    this.usuarios = [{ id: 1, usuario: 'leo', senha: '123' }];
 
     this.listaTransferencia = [];
-
   }
 
-  login(usuario: string, senha: string): boolean{
-
+  login(usuario: string, senha: string): boolean {
     let isLogado = false;
 
-    this.usuarios.forEach(usr => {
-      if((usr.usuario === usuario) && usr.senha === senha){
+    this.usuarios.forEach((usr) => {
+      if (usr.usuario === usuario && usr.senha === senha) {
         isLogado = true;
       }
     });
 
-    if(isLogado){
+    if (isLogado) {
       return true;
-    } else{
+    } else {
       return false;
     }
-
   }
 
   transferencias(): any {
@@ -53,155 +46,156 @@ export class SystemService {
     transferencia.data = new Date();
   }
 
-  setStock(stock: string){
+  setStock(stock: string) {
     this.stock = stock;
   }
 
-  yahooFinanceHistorical(dataInicio: Date, dataFim: Date): any{
+  yahooFinanceHistorical(dataInicio: Date, dataFim: Date): any {
     console.log('GET Yahoo Finance Historical for ' + this.stock);
 
-      // eslint-disable-next-line max-len
-      // return this.http.get(`https://yahoofinance-stocks1.p.rapidapi.com/stock-prices?EndDateInclusive=${dataFim}&StartDateInclusive=${dataInicio}&Symbol=${this.stock}&OrderBy=Ascending`,{
-      //   headers: new HttpHeaders({
-      //     // eslint-disable-next-line @typescript-eslint/naming-convention
-      //    'X-RapidAPI-Key': '18caca19a0msh3197206b5fa9ff5p1658c0jsnfc2ebc914203',
-      //    // eslint-disable-next-line @typescript-eslint/naming-convention
-      //    'X-RapidAPI-Host': 'yahoofinance-stocks1.p.rapidapi.com',
-      //   })
-      // });
+    // eslint-disable-next-line max-len
+    return this.http.get(`https://yahoofinance-stocks1.p.rapidapi.com/stock-prices?EndDateInclusive=${dataFim}&StartDateInclusive=${dataInicio}&Symbol=${this.stock}&OrderBy=Ascending`,{
+      headers: new HttpHeaders({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+       'X-RapidAPI-Key': '18caca19a0msh3197206b5fa9ff5p1658c0jsnfc2ebc914203',
+       // eslint-disable-next-line @typescript-eslint/naming-convention
+       'X-RapidAPI-Host': 'yahoofinance-stocks1.p.rapidapi.com',
+      })
+    });
 
+    // Testing purposes
     return {
-        total: 251,
-        offset: 0,
-        results: [
-          {
-            date: '2022-07-28',
-            open: 9.82,
-            high: 9.86,
-            low: 9.78,
-            close: 9.8,
-            volume: 663156,
-            adjClose: 9.680488
-          },
-          {
-            date: '2022-07-29',
-            open: 9.84,
-            high: 9.84,
-            low: 9.79,
-            close: 9.84,
-            volume: 650628,
-            adjClose: 9.72
-          },
-          {
-            date: '2022-08-01',
-            open: 9.75,
-            high: 9.8,
-            low: 9.68,
-            close: 9.79,
-            volume: 828533,
-            adjClose: 9.79
-          },
-          {
-            date: '2022-08-02',
-            open: 9.79,
-            high: 9.83,
-            low: 9.73,
-            close: 9.8,
-            volume: 776222,
-            adjClose: 9.8
-          },
-          {
-            date: '2022-08-03',
-            open: 9.8,
-            high: 9.85,
-            low: 9.78,
-            close: 9.83,
-            volume: 721036,
-            adjClose: 9.83
-          },
-          {
-            date: '2022-08-04',
-            open: 9.83,
-            high: 9.83,
-            low: 9.79,
-            close: 9.81,
-            volume: 538277,
-            adjClose: 9.81
-          },
-          {
-            date: '2022-08-05',
-            open: 9.82,
-            high: 9.82,
-            low: 9.79,
-            close: 9.81,
-            volume: 628111,
-            adjClose: 9.81
-          },
-          {
-            date: '2022-08-08',
-            open: 9.81,
-            high: 9.83,
-            low: 9.79,
-            close: 9.83,
-            volume: 734521,
-            adjClose: 9.83
-          },
-          {
-            date: '2022-08-09',
-            open: 9.83,
-            high: 9.89,
-            low: 9.81,
-            close: 9.89,
-            volume: 550008,
-            adjClose: 9.89
-          },
-          {
-            date: '2022-08-10',
-            open: 9.89,
-            high: 9.93,
-            low: 9.88,
-            close: 9.91,
-            volume: 690529,
-            adjClose: 9.91
-          },
-          {
-            date: '2022-08-11',
-            open: 9.91,
-            high: 9.93,
-            low: 9.9,
-            close: 9.92,
-            volume: 539172,
-            adjClose: 9.92
-          },
-          {
-            date: '2022-08-12',
-            open: 9.94,
-            high: 9.94,
-            low: 9.86,
-            close: 9.86,
-            volume: 1054642,
-            adjClose: 9.86
-          }
-        ],
-        responseStatus: null
+      total: 251,
+      offset: 0,
+      results: [
+        {
+          date: '2022-07-28',
+          open: 9.82,
+          high: 9.86,
+          low: 9.78,
+          close: 9.8,
+          volume: 663156,
+          adjClose: 9.680488,
+        },
+        {
+          date: '2022-07-29',
+          open: 9.84,
+          high: 9.84,
+          low: 9.79,
+          close: 9.84,
+          volume: 650628,
+          adjClose: 9.72,
+        },
+        {
+          date: '2022-08-01',
+          open: 9.75,
+          high: 9.8,
+          low: 9.68,
+          close: 9.79,
+          volume: 828533,
+          adjClose: 9.79,
+        },
+        {
+          date: '2022-08-02',
+          open: 9.79,
+          high: 9.83,
+          low: 9.73,
+          close: 9.8,
+          volume: 776222,
+          adjClose: 9.8,
+        },
+        {
+          date: '2022-08-03',
+          open: 9.8,
+          high: 9.85,
+          low: 9.78,
+          close: 9.83,
+          volume: 721036,
+          adjClose: 9.83,
+        },
+        {
+          date: '2022-08-04',
+          open: 9.83,
+          high: 9.83,
+          low: 9.79,
+          close: 9.81,
+          volume: 538277,
+          adjClose: 9.81,
+        },
+        {
+          date: '2022-08-05',
+          open: 9.82,
+          high: 9.82,
+          low: 9.79,
+          close: 9.81,
+          volume: 628111,
+          adjClose: 9.81,
+        },
+        {
+          date: '2022-08-08',
+          open: 9.81,
+          high: 9.83,
+          low: 9.79,
+          close: 9.83,
+          volume: 734521,
+          adjClose: 9.83,
+        },
+        {
+          date: '2022-08-09',
+          open: 9.83,
+          high: 9.89,
+          low: 9.81,
+          close: 9.89,
+          volume: 550008,
+          adjClose: 9.89,
+        },
+        {
+          date: '2022-08-10',
+          open: 9.89,
+          high: 9.93,
+          low: 9.88,
+          close: 9.91,
+          volume: 690529,
+          adjClose: 9.91,
+        },
+        {
+          date: '2022-08-11',
+          open: 9.91,
+          high: 9.93,
+          low: 9.9,
+          close: 9.92,
+          volume: 539172,
+          adjClose: 9.92,
+        },
+        {
+          date: '2022-08-12',
+          open: 9.94,
+          high: 9.94,
+          low: 9.86,
+          close: 9.86,
+          volume: 1054642,
+          adjClose: 9.86,
+        },
+      ],
+      responseStatus: null,
     };
   }
 
-  yahooFinanceDividend(): any{
 
-    console.log('get dividends for '+this.stock);
-    delay(5000);
-    console.log('after delay');
-      // eslint-disable-next-line max-len
-      // return this.http.get(`https://yahoofinance-stocks1.p.rapidapi.com/dividends?Symbol=${this.stock}&OrderBy=Ascending`,{
-      //   headers: new HttpHeaders({
-      //     // eslint-disable-next-line @typescript-eslint/naming-convention
-      //    'X-RapidAPI-Key': '18caca19a0msh3197206b5fa9ff5p1658c0jsnfc2ebc914203',
-      //    // eslint-disable-next-line @typescript-eslint/naming-convention
-      //    'X-RapidAPI-Host': 'yahoofinance-stocks1.p.rapidapi.com',
-      //   })
-      // });
+  yahooFinanceDividend(): any {
+    console.log('get dividends for ' + this.stock);
 
+    // eslint-disable-next-line max-len
+    return this.http.get(`https://yahoofinance-stocks1.p.rapidapi.com/dividends?Symbol=${this.stock}&OrderBy=Ascending`,{
+      headers: new HttpHeaders({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+       'X-RapidAPI-Key': '18caca19a0msh3197206b5fa9ff5p1658c0jsnfc2ebc914203',
+       // eslint-disable-next-line @typescript-eslint/naming-convention
+       'X-RapidAPI-Host': 'yahoofinance-stocks1.p.rapidapi.com',
+      })
+    });
+
+    // Testing purposes
     const resDividend = {
       total: 6,
       offset: 0,
@@ -238,7 +232,7 @@ export class SystemService {
 
   // todas ações da bolsa brasileira
   yahooFinanceExchanges() {
-
+    // All Brazilian companies
     const companies = {
       total: 648,
       offset: 0,
@@ -4143,5 +4137,4 @@ export class SystemService {
 
     return exchanges;
   }
-
 }
