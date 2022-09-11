@@ -1,3 +1,4 @@
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { SystemService } from './../service/system.service';
 import { Component, OnInit} from '@angular/core';
 import { DatePipe } from '@angular/common';
@@ -21,6 +22,8 @@ export class ConsultaPage implements OnInit {
 
   transferencias: any;
 
+  photo: SafeResourceUrl;
+
   constructor(private service: SystemService, private router: Router) {}
 
   ngOnInit() {
@@ -37,6 +40,11 @@ export class ConsultaPage implements OnInit {
     this.dataFim = datepipe.transform(new Date(), 'yyyy-MM-dd');
 
     this.transferencias = this.service.transferencias();
+
+  }
+
+  atualizarFoto(){
+    this.photo = this.service.getUserPhoto();
   }
 
   consultarAcao() {

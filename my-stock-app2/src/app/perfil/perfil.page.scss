@@ -1,0 +1,24 @@
+.avatar {
+  vertical-align: middle;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+#updateProfilePhoto{
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display:flex;
+}
+
+.titulo{
+  text-align: center;
+  margin: center;
+  width: 200px;
+}
+
+.camera{
+  margin: center;
+}

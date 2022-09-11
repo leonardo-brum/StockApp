@@ -1,3 +1,4 @@
+import { SafeResourceUrl } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -7,11 +8,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class SystemService {
   usuarios: any[];
   stock: string;
+  username: string;
+
+  photoUser: SafeResourceUrl;
 
   private listaTransferencia: any[];
 
   constructor(private http: HttpClient) {
-    this.usuarios = [{ id: 1, usuario: 'leo', senha: '123' }];
+    this.usuarios = [{ id: 1, usuario: 'Leonardo', senha: '123', nomeCompleto: 'Leonardo Telles de Brum' }];
 
     this.listaTransferencia = [];
   }
@@ -21,6 +25,7 @@ export class SystemService {
 
     this.usuarios.forEach((usr) => {
       if (usr.usuario === usuario && usr.senha === senha) {
+        this.username = usr.nomeCompleto;
         isLogado = true;
       }
     });
@@ -30,6 +35,18 @@ export class SystemService {
     } else {
       return false;
     }
+  }
+
+  getUsername(): string{
+    return this.username;
+  }
+
+  setUserPhoto(photo: SafeResourceUrl){
+    this.photoUser = photo;
+  }
+
+  getUserPhoto(): SafeResourceUrl{
+    return this.photoUser;
   }
 
   transferencias(): any {
