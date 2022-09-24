@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Resp Financeiro</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Sair</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+  <form>
+    <ion-list lines="full" *ngFor="let item of prestacoes">
+
+
+      <ion-label>ID: {{item.idPrest}} </ion-label> <br>
+      <ion-label>User: {{item.idUser}} </ion-label> <br>
+      <ion-label>Mês Contábil: {{item.mesContabil}} </ion-label> <br>
+      <ion-label>Data: {{item.dataRegistro}} </ion-label> <br>
+      <ion-label>Descricao: {{item.descricao}} </ion-label> <br>
+      <ion-label>Status: {{item.status}} </ion-label> <br>
+
+      <ion-button *ngIf="item.status !== 'Aprovada'" slot="end" color="success" (click)="aprovarConta(item.idPrest)">Aprovar</ion-button>
+      <ion-button *ngIf="item.status !== 'Aprovada'" slot="end" color="danger" (click)="refazerConta(item.idPrest)">Refazer</ion-button>
+
+      <ion-row>_____________________________________________</ion-row>
+
+    </ion-list>
+  </form>
+
+</ion-content>

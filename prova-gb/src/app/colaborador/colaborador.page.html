@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Colaborador</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">Sair</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-button expand="block" color="danger" (click)="setOpenCadastro(true)">Cadastrar Prestação de Conta</ion-button>
+
+  <ion-modal [isOpen]="isModalOpenCadastro">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Cadastro</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenCadastro(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form>
+
+          <ion-item lines="full">
+            <ion-text>Data Registro: </ion-text>
+            <ion-input placeholder="Data Registro" type="date" name="dataRegistro" [(ngModel)]="dataRegistro">
+            </ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-text>Mês Contábil: </ion-text>
+            <ion-input placeholder=" ex: setembro" name="mesContabil" [(ngModel)]="mesContabil"></ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-text>Descrição Geral: </ion-text>
+            <ion-input placeholder="Descrição Geral" name="descricao" [(ngModel)]="descricao"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-button expand="block" type="submit" (click)="salvarPrestacao()" color="danger"> Salvar</ion-button>
+          </ion-item>
+        </form>
+
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <form>
+    <ion-list lines="full" *ngFor="let item of prestacoes">
+    
+
+        <ion-label>ID: {{item.idPrest}} </ion-label> <br>
+        <ion-label>User: {{item.idUser}} </ion-label> <br>
+        <ion-label>Mês Contábil: {{item.mesContabil}} </ion-label> <br>
+        <ion-label>Data: {{item.dataRegistro}} </ion-label> <br>
+        <ion-label>Descricao: {{item.descricao}} </ion-label> <br>
+        <ion-label>Status: {{item.status}} </ion-label> <br>
+        <ion-button *ngIf="item.status !== 'Aprovada'" slot = "end" (click)="carregarPrestacao(item.idPrest)">Alterar</ion-button>
+
+        <ion-row>_____________________________________________</ion-row>
+      
+    </ion-list>
+  </form>
+
+
+  <ion-modal [isOpen]="isModalOpenAlteracao">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Alteração ID {{IDAtual}}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpenAlteracao(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form>
+
+          <ion-item lines="full">
+            <ion-text>Data Registro: </ion-text>
+            <ion-input placeholder="Data Registro" type="date" name="dataRegistro" [(ngModel)]="dataRegistro">
+            </ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-text>Mês Contábil: </ion-text>
+            <ion-input placeholder=" ex: setembro" name="mesContabil" [(ngModel)]="mesContabil"></ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-text>Descrição Geral: </ion-text>
+            <ion-input placeholder="Descrição Geral" name="descricao" [(ngModel)]="descricao"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-button expand="block" type="submit" (click)="alterarPrestacao()" color="danger"> Atualizar</ion-button>
+          </ion-item>
+        </form>
+
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "prova-gb",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
